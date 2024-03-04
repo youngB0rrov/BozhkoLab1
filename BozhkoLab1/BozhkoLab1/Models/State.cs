@@ -35,6 +35,18 @@ namespace BozhkoLab1.Models
 			Parent = parent;
 			CalculateH();
 		}
+		public void PrintState()
+		{
+			var position = this.Position;
+			for (var i = 0; i < _n;  i++)
+			{
+				for (var j = 0; j < _n; j++)
+				{
+					Console.Write($"{position[i][j], 2} ");
+				}
+				Console.WriteLine();
+			}
+		}
 		private static State MoveRight(State parent, int g, int i, int j)
 		{
 			var newPosition = parent.Position.ConvertAll(x => new List<int>(x));
@@ -98,9 +110,9 @@ namespace BozhkoLab1.Models
 			{
 				leftDiagonalSum += Position[i][i];
 			}
-			for (var i = _n - 1; i <= 0; --i)
+			for (var i = _n - 1; i >= 0; --i)
 			{
-				rightDiagonalSum += Position[i][_n - 1 - i];
+				rightDiagonalSum += Position[_n - 1 - i][i];
 			}
 			return Tuple.Create(leftDiagonalSum, rightDiagonalSum);
 		}

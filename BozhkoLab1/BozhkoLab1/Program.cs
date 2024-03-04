@@ -9,11 +9,9 @@ class Tag
 	private int H = 10000; 
 	private readonly int _maxIterationsNumber = 1000;
 	private List<State> Open { get; set; } = new();
-	private List<State> History { get; set; } = new();
 	private void Initialize()
 	{
 		var StartPosition = new State(0);
-		History.Add(StartPosition);
 		Open.Add(StartPosition);
 	}
 	private State FindStateViaMinimalF()
@@ -40,13 +38,19 @@ class Tag
 			var generatedDescendents = stateViaMinimalF.GenarateDescendants();
 			foreach (var generatedDescendent in generatedDescendents)
 			{
-				var isAlreadyOpen = generatedDescendent.IsAlreadyOpen(History.ToList());
+				var isAlreadyOpen = generatedDescendent.IsAlreadyOpen(Open.ToList());
 				if (!isAlreadyOpen)
 				{
-					History.Add(generatedDescendent);
+					Open.Add(generatedDescendent);
 				}
 			}
-			Console.WriteLine($"H: {stateViaMinimalF.H}, G: {stateViaMinimalF.G}");
+			//Console.WriteLine($"H: {stateViaMinimalF.H}, G: {stateViaMinimalF.G}");
+			if (H <= 10)
+			{
+				stateViaMinimalF.PrintState();
+				Console.WriteLine($"H: {stateViaMinimalF.H}, G: {stateViaMinimalF.G}");
+				Console.WriteLine();
+			}
 		}
 	}
 }
