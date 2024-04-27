@@ -23,7 +23,7 @@ namespace BozhkoLab1.Models
 			{
 				new List<int> { 1, 2, 3, 4},
 				new List<int> { 5, 6, 7, 8},
-				new List<int> { 9, 10,11, 12},
+				new List<int> { 9, 10, 11, 12},
 				new List<int> { 13, 15, 14, 0},
 			};
 			CalculateH();
@@ -122,14 +122,14 @@ namespace BozhkoLab1.Models
 
 			for (var i = 0; i < _n; ++i)
 			{
-				var columnDelta = Math.Abs(_sum - GetColumnSum(i));
-				var rowDelta = Math.Abs(_sum - GetRowSum(i));
+				var columnDelta = (int)Math.Abs((_sum - GetColumnSum(i)));
+				var rowDelta = (int)Math.Abs(_sum - GetRowSum(i));
 				h += columnDelta;
 				h += rowDelta;
 			}
 			var diagonalsSum = GetDiagonalsSum();
-			h += Math.Abs(_sum - diagonalsSum.Item1);
-			h += Math.Abs(_sum - diagonalsSum.Item2);
+			h += (int)Math.Abs((_sum - diagonalsSum.Item1));
+			h += (int)Math.Abs((_sum - diagonalsSum.Item2));
 
 			H = h;
 		}
@@ -149,7 +149,7 @@ namespace BozhkoLab1.Models
 
 			return result;
 		}
-		public bool IsAlreadyOpen(List<State> opened)
+		public bool IsAlreadyOpen(List<State> opened, List<State> closed)
 		{
 			var currentItemDigits = this.Position.SelectMany(x => x.Select(y => y)).ToList();
 			
@@ -160,6 +160,22 @@ namespace BozhkoLab1.Models
 				for (var i = 0; i < _n * _n; ++i)
 				{
 					if (openItemDigits[i] == currentItemDigits[i])
+					{
+						equalDigitsCount++;
+					}
+				}
+				if (equalDigitsCount == _n * _n)
+				{
+					return true;
+				}
+			}
+			foreach (var close in closed)
+			{
+				var closeItemDigits = close.Position.SelectMany(x => x.Select(y => y)).ToList();
+				var equalDigitsCount = 0;
+				for (var i = 0; i < _n * _n; ++i)
+				{
+					if (closeItemDigits[i] == currentItemDigits[i])
 					{
 						equalDigitsCount++;
 					}
